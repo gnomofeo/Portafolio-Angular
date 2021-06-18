@@ -6,18 +6,31 @@ import{ProductoInterface} from'../interfaces/producto.interface';
   providedIn: 'root'
 })
 export class ProductosService {
-  cargando =  true;
 
-  constructor(private htpp:HttpClient) {
+  cargando = true;
+  productos: ProductoInterface[] = [];
+
+
+  constructor( private http: HttpClient ) {
+
     this.cargarProductos();
-   }
-  private cargarProductos()
-  {
-    this.htpp.get('https://angular-html-d8ed4-default-rtdb.firebaseio.com/productos_idx')
-    .subscribe((resp: ProductoInterface[]) => {
-    console.log(resp);
-    this.cargando =  false;
-    });
 
   }
+
+
+  private cargarProductos() {
+
+    this.http.get('https://angular-html-d8ed4-default-rtdb.firebaseio.com/productos_idx.json')
+        .subscribe( (resp: ProductoInterface[]) => {
+
+          console.log(resp);
+          this.productos = resp;
+          this.cargando = false;
+
+        });
+
+
+  }
+
 }
+
